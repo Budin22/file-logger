@@ -1,0 +1,5 @@
+FILE : src/main/resources/
+LEVEL : DEBUG
+MAX-SIZE : 312
+FORMAT : [%tc][%s] Message from config: %s %n
+EXTEND : false

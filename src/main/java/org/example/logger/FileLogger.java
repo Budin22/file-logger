@@ -1,41 +1,70 @@
 package org.example.logger;
 
+import org.example.config.FileLoggerConfiguration;
+import org.example.config.FileLoggerConfigurationLoader;
 import org.example.config.LoginLevel;
 import org.example.exception.FileMaxSizeReachedException;
 
 import java.io.*;
+import java.nio.channels.FileChannel;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class FileLogger {
-    private static String filePath = "src/main/resources/logs/text.txt";
-    private static long maxSize = 1;
+    private static FileLoggerConfiguration config = new FileLoggerConfiguration();
+
+    public static void setConfig(FileLoggerConfiguration config) {
+        FileLogger.config = config;
+    }
+
+    public static void loadConfigFromFile(String path) {
+        FileLogger.config = FileLoggerConfigurationLoader.load(path);
+    }
 
     private static void checkFileSizeLimitation() throws FileMaxSizeReachedException {
-        File myFile = new File(filePath);
+
+        File myFile = new File(config.getPath());
         long fileSize = myFile.length();
-        if(fileSize >= maxSize){
-            throw new FileMaxSizeReachedException(String.format("File size: %d bytes, but maxSize: %d bytes, file: %s", fileSize, maxSize, filePath));
+        if (fileSize >= config.getMaxSize()) {
+            if (!config.isExtend()) {
+                throw new FileMaxSizeReachedException(String.format("File size: %d bytes, but maxSize: %d bytes, file: %s", fileSize, config.getMaxSize(), config.getPath()));
+            } else {
+                config.setFileName(String.format("log_%s.txt", new SimpleDateFormat("dd.M.yyyy_hh.mm.ss.SSS").format(new Date())));
+            }
         }
     }
 
-    private static void writeMessage(String message, String level){
-        try(FileWriter file = new FileWriter(filePath, true);
-            BufferedWriter writer = new BufferedWriter(file)
+    private static void writeMessage(String message, LoginLevel level) {
+
+
+        try (FileWriter file = new FileWriter(config.getPath(), true);
+             Writer writer = new BufferedWriter(file)
         ) {
-            checkFileSizeLimitation();
-            writer.append(String.format("[%tc][%s] Message: %s %n", new Date(), level, message));
+            writer.append(String.format(config.getFormat(), new Date(), level, message));
             writer.flush();
         } catch (IOException e) {
             System.out.println("Get IOException: " + e.getMessage());
+        }
+    }
+
+    public static void debug(String message) {
+        try {
+            checkFileSizeLimitation();
+            if (config.getLevel().name().equals("DEBUG")) {
+                writeMessage(message, LoginLevel.DEBUG);
+            }
         } catch (FileMaxSizeReachedException e) {
             System.out.println("Get FileMaxSizeReachedException: " + e.getMessage());
         }
     }
-    public static void debug(String message) {
-        writeMessage(message, LoginLevel.DEBUG.name());
-    }
 
     public static void info(String message) {
-        writeMessage(message, LoginLevel.INFO.name());
+        try {
+            checkFileSizeLimitation();
+            writeMessage(message, LoginLevel.INFO);
+        } catch (FileMaxSizeReachedException e) {
+            System.out.println("Get FileMaxSizeReachedException: " + e.getMessage());
+        }
+
     }
 }
