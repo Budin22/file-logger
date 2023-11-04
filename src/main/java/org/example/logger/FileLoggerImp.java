@@ -10,9 +10,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class FileLoggerImp implements FileLogger {
-    private FileLoggerConfiguration config = new FileLoggerConfigurationImp.Builder().build();
+    private final FileLoggerConfiguration config;
     private File fileWithLogs;
     public FileLoggerImp() {
+        this.config = new FileLoggerConfigurationImp.Builder().build();
     }
     public FileLoggerImp(FileLoggerConfiguration config) {
         this.config = config;
