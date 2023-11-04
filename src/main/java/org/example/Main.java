@@ -1,34 +1,33 @@
 package org.example;
 
 import org.example.config.FileLoggerConfiguration;
-import org.example.config.LoginLevel;
+import org.example.config.FileLoggerConfigurationImp;
+import org.example.config.FileLoggerConfigurationLoader;
+import org.example.config.FileLoggerConfigurationLoaderImp;
+import org.example.exception.ConfigurationLoaderException;
+import org.example.logger.FileLoggerImp;
 import org.example.logger.FileLogger;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
-        FileLoggerConfiguration config = new FileLoggerConfiguration();
-        config.setLevel(LoginLevel.DEBUG);
-        config.setMaxSize(300);
-        config.setFormat("[%tc][%s] Some nice message: %s %n");
-        config.setPathToFile("src/main/resources/");
-        config.setExtend(true);
-        FileLogger.setConfig(config);
+    public static void main(String[] args) {
+        try {
+            FileLoggerConfigurationLoader configLoader = new FileLoggerConfigurationLoaderImp();
+            FileLoggerConfiguration config = configLoader.load("src/main/resources/config.txt");
+            FileLoggerConfiguration defConfig = new FileLoggerConfigurationImp.Builder().build();
+            FileLogger logger = new FileLoggerImp(config);
 
-        FileLogger.loadConfigFromFile("src/main/resources/config.txt");
-
-        FileLogger.debug("message from debug");
-        FileLogger.info("message from info");
-        FileLogger.debug("message from debug");
-        FileLogger.info("message from info");
-        FileLogger.debug("message from debug");
-        FileLogger.info("message from info");
-        FileLogger.debug("message from debug");
-        FileLogger.info("message from info");
-        FileLogger.debug("message from debug");
-        FileLogger.info("message from info");
-        FileLogger.debug("message from debug");
-        FileLogger.info("message from info");
-        FileLogger.debug("message from debug");
-        FileLogger.info("message from info");
+            logger.info("info write some");
+            logger.debug("info write some");
+            logger.info("info write some");
+            logger.debug("info write some");
+            logger.info("info write some");
+            logger.debug("info write some");
+            logger.info("info write some");
+            logger.debug("info write some");
+            logger.info("info write some");
+            logger.debug("info write some");
+        } catch (ConfigurationLoaderException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
