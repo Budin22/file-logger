@@ -18,7 +18,7 @@ public class Main {
             FileLoggerConfiguration config = configLoader.load("src/main/resources/config.txt");
             FileLoggerConfiguration defConfig = new FileLoggerConfigurationImp.Builder().setPath("src/main/resources/").build();
 
-            Logger logger = new FileLogger(config);
+            Logger logger = new FileLogger(defConfig);
 
             logger.info("info write some");
             logger.debug("info write some");
