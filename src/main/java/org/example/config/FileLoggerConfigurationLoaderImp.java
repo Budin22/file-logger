@@ -25,7 +25,7 @@ public class FileLoggerConfigurationLoaderImp implements FileLoggerConfiguration
                     .setPath(dataFromFile.get("FILE"))
                     .setExtend(Boolean.parseBoolean(dataFromFile.get("EXTEND")))
                     .setMaxSize(Long.parseLong(dataFromFile.get("MAX-SIZE")))
-                    .setLevel(LoginLevel.valueOf(dataFromFile.get("LEVEL")))
+                    .setLevel(LoggingLevel.valueOf(dataFromFile.get("LEVEL")))
                     .setFormat(dataFromFile.get("FORMAT"))
                     .build();
         } catch (FileNotFoundException e) {

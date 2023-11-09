@@ -1,5 +1,5 @@
-FILE : src/main/resources/
+FILE : C:\Users\Alena\Desktop\Lesson\file-logger\src\main\resources\
 LEVEL : DEBUG
-MAX-SIZE : 680
+MAX-SIZE : 350
 FORMAT : [%tc][%s] Message from config: %s %n
 EXTEND : false

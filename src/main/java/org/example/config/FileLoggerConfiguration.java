@@ -5,7 +5,7 @@ public interface FileLoggerConfiguration {
 
     boolean isExtend();
 
-    LoginLevel getLevel();
+    LoggingLevel getLevel();
 
     long getMaxSize();
 

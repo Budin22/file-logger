@@ -1,9 +1,11 @@
 package org.example.config;
 
+import java.io.File;
+
 public class FileLoggerConfigurationImp implements FileLoggerConfiguration {
     private final String path;
     private final boolean extend;
-    private final LoginLevel level;
+    private final LoggingLevel level;
     private final long maxSize;
     private final String format;
 
@@ -18,12 +20,11 @@ public class FileLoggerConfigurationImp implements FileLoggerConfiguration {
     public static class Builder {
         private String path = "src/main/resources/";
         private boolean extend = false;
-        private LoginLevel level = LoginLevel.DEBUG;
+        private LoggingLevel level = LoggingLevel.DEBUG;
         private long maxSize = 512;
         private String format = "[%tc][%s] Message: %s %n";
 
         public FileLoggerConfiguration build() {
-
             return new FileLoggerConfigurationImp(this);
         }
 
@@ -32,7 +33,7 @@ public class FileLoggerConfigurationImp implements FileLoggerConfiguration {
             return this;
         }
 
-        public Builder setLevel(LoginLevel level) {
+        public Builder setLevel(LoggingLevel level) {
             this.level = level;
             return this;
         }
@@ -61,7 +62,7 @@ public class FileLoggerConfigurationImp implements FileLoggerConfiguration {
         return extend;
     }
 
-    public LoginLevel getLevel() {
+    public LoggingLevel getLevel() {
         return level;
     }
 

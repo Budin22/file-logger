@@ -1,5 +1,5 @@
 package org.example.config;
 
-public enum LoginLevel {
+public enum LoggingLevel {
     INFO, DEBUG
 }
